@@ -85,5 +85,30 @@ async function toggleTask(req, res, next) {
   }
 }
 
+async function updateTask(req, res, next) {
+  try {
+    const userId = new mongoose.Types.ObjectId(req.user.userId);
+    const task = await Task.findOne({ _id: req.params.id, userId });
 
-module.exports = { getAllTasks, getTaskById, createTask, deleteTask, toggleTask };
+    if (!task) {
+      const error = new Error("Task not found");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    if (req.body.text !== undefined) {
+      task.text = req.body.text;
+    }
+    if (req.body.dueDate !== undefined) {
+      task.dueDate = req.body.dueDate;
+    }
+
+    await task.save();
+    res.json(task);
+  } catch (error) {
+    next(error);
+  }
+}
+
+
+module.exports = { getAllTasks, getTaskById, createTask, deleteTask, toggleTask, updateTask };

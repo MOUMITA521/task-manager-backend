@@ -8,5 +8,6 @@ router.get('/:id', verifyToken, taskController.getTaskById);
 router.post('/', verifyToken, taskController.createTask);
 router.delete('/:id', verifyToken, taskController.deleteTask);
 router.put('/:id', verifyToken, taskController.toggleTask);
+router.patch('/:id', verifyToken, taskController.updateTask); // NAYA
 
 module.exports = router;
