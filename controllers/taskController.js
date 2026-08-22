@@ -35,12 +35,12 @@ async function createTask(req, res, next) {
       error.statusCode = 400;
       throw error;
     }
-
+    const userId = new mongoose.Types.ObjectId(req.user.userId);
     const newTask = await Task.create({
       text: req.body.text,
       userId: req.user.userId, // is task ko current user se link kiya
+      dueDate: req.body.dueDate || null, // naya field
     });
-
     res.status(201).json(newTask);
   } catch (error) {
     next(error);

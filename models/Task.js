@@ -14,6 +14,10 @@ const taskSchema = new mongoose.Schema({
     ref: 'User', // batata hai ye 'User' model se related hai
     required: true,
   },
+  dueDate: {
+    type: Date,
+    default: null, // agar user na de, to khаली rahegа
+  },
 }, { timestamps: true }); // ye automatically createdAt, updatedAt add karta hai
 
 const Task = mongoose.model('Task', taskSchema);
