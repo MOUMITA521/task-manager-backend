@@ -9,16 +9,21 @@ const taskSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-   userId: {
-    type: mongoose.Schema.Types.ObjectId, // ye ek User document ka ID store karega
-    ref: 'User', // batata hai ye 'User' model se related hai
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
   },
   dueDate: {
     type: Date,
-    default: null, // agar user na de, to khаली rahegа
+    default: null,
   },
-}, { timestamps: true }); // ye automatically createdAt, updatedAt add karta hai
+  category: {
+    type: String,
+    enum: ['Work', 'Personal', 'Health', 'Other'],
+    default: 'Other',
+  },
+}, { timestamps: true });
 
 const Task = mongoose.model('Task', taskSchema);
 

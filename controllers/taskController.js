@@ -38,8 +38,9 @@ async function createTask(req, res, next) {
     const userId = new mongoose.Types.ObjectId(req.user.userId);
     const newTask = await Task.create({
       text: req.body.text,
-      userId: req.user.userId, // is task ko current user se link kiya
-      dueDate: req.body.dueDate || null, // naya field
+      userId,
+      dueDate: req.body.dueDate || null,
+      category: req.body.category || 'Other',
     });
     res.status(201).json(newTask);
   } catch (error) {
@@ -96,12 +97,9 @@ async function updateTask(req, res, next) {
       throw error;
     }
 
-    if (req.body.text !== undefined) {
-      task.text = req.body.text;
-    }
-    if (req.body.dueDate !== undefined) {
-      task.dueDate = req.body.dueDate;
-    }
+    if (req.body.text !== undefined) task.text = req.body.text;
+    if (req.body.dueDate !== undefined) task.dueDate = req.body.dueDate;
+    if (req.body.category !== undefined) task.category = req.body.category;
 
     await task.save();
     res.json(task);
