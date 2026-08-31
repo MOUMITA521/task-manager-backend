@@ -38,9 +38,11 @@ async function createTask(req, res, next) {
     const userId = new mongoose.Types.ObjectId(req.user.userId);
     const newTask = await Task.create({
       text: req.body.text,
+      description: req.body.description || "",
       userId,
       dueDate: req.body.dueDate || null,
       category: req.body.category || 'Other',
+      priority: req.body.priority || 'Medium',
     });
     res.status(201).json(newTask);
   } catch (error) {
@@ -98,8 +100,10 @@ async function updateTask(req, res, next) {
     }
 
     if (req.body.text !== undefined) task.text = req.body.text;
+    if (req.body.description !== undefined) task.description = req.body.description;
     if (req.body.dueDate !== undefined) task.dueDate = req.body.dueDate;
     if (req.body.category !== undefined) task.category = req.body.category;
+    if (req.body.priority !== undefined) task.priority = req.body.priority;
 
     await task.save();
     res.json(task);
