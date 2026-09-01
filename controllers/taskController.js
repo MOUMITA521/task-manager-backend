@@ -53,7 +53,8 @@ async function createTask(req, res, next) {
 // DELETE task
 async function deleteTask(req, res, next) {
   try {
-    const task = await Task.findOne({ _id: req.params.id, userId: req.user.userId });
+    const userId = new mongoose.Types.ObjectId(req.user.userId);
+    const task = await Task.findOne({ _id: req.params.id, userId });
 
     if (!task) {
       const error = new Error("Task not found");
@@ -62,7 +63,7 @@ async function deleteTask(req, res, next) {
     }
 
     await Task.findByIdAndDelete(req.params.id);
-    res.send('Task deleted');
+    res.status(200).json({ message: "Task deleted successfully", id: req.params.id });
   } catch (error) {
     next(error);
   }
